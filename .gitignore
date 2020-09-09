@@ -1,0 +1,10 @@
+*.o
+*.su
+*.map
+*.hex
+*.list
+*.map
+*.swo
+*.swp
+*.elf
+/Debug/
