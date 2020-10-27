@@ -3,6 +3,8 @@
 
 #include "stm32f0xx_hal.h"
 
+typedef unsigned char u8;
+
 #define ADDRESS_PIN_01	GPIO_PIN_14	//C
 #define ADDRESS_PIN_02	GPIO_PIN_15	//C
 #define ADDRESS_PIN_03	GPIO_PIN_0	//A
@@ -21,6 +23,13 @@ uint8_t	motor_speed[3];
 uint8_t status_byte;
 uint8_t current_mode_control;
 uint8_t	device_address;
+
+u8 usart_send_finish_command;
+u8 usart_send_finish_delay;
+u8 usart_send_start_command;
+u8 usart_send_start_delay;
+
+u8 usart_is_busy;
 
 #endif /* __MAIN_H */
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

@@ -69,7 +69,6 @@ void initilize_stepper_motors(void){
 		if (my_timer > 20) {
 			temporary++;
 		}
-
 		break;
 	case 1:
 		HAL_GPIO_WritePin(Drv_RST_GPIO_Port, Drv_RST_Pin, GPIO_PIN_SET);

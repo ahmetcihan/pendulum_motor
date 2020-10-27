@@ -33,7 +33,7 @@ void clear_usart_buffer(void) {
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 	if (huart->Instance == USART2) {
 		rx_buffer[rx_counter] = rx_byte;
-		buffer_clear_timer = 20;
+		buffer_clear_timer = 10;
 		buffer_cleared = 0;
 		if ((rx_buffer[rx_counter] == 0x0A) && (rx_buffer[rx_counter - 1] == 0x0D)) {
 			control_ReceiveData = 1;
@@ -47,7 +47,8 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 }
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart){
 	if (huart->Instance == USART2) {
-		HAL_GPIO_WritePin( GPIOA , Tx2_en , GPIO_PIN_RESET );
+		usart_send_finish_delay = 1;
+		usart_send_finish_command = 1;
 	}
 }
 void read_address(void){
@@ -91,6 +92,12 @@ int main(void){
 	motor_command = 0;
 	current_mode_control = 0;
 
+	usart_send_start_command = 0;
+	usart_send_start_delay = 0;
+	usart_send_finish_command = 0;
+	usart_send_finish_delay = 0;
+	usart_is_busy = 0;
+
 	HAL_GPIO_WritePin( GPIOA , Tx2_en , GPIO_PIN_RESET );
 
 	while (1){
@@ -111,6 +118,21 @@ int main(void){
 		if(_100_usec == 1){
 			_100_usec = 0;
 			if (buffer_clear_timer > 0) buffer_clear_timer--;
+			if (usart_send_start_delay > 0) usart_send_start_delay--;
+			if (usart_send_finish_delay > 0) usart_send_finish_delay--;
+			if(usart_send_finish_command == 1){
+				if(usart_send_finish_delay == 0){
+					usart_send_finish_command = 0;
+					HAL_GPIO_WritePin( GPIOA , Tx2_en , GPIO_PIN_RESET );
+					usart_is_busy = 0;
+				}
+			}
+			if(usart_send_start_command == 1){
+				if(usart_send_start_delay == 0){
+					usart_send_start_command = 0;
+					HAL_UART_Transmit_IT(&huart2,&tx_buffer[0],9);
+				}
+			}
 		}
 		if(_1_msec == 1){
 			_1_msec = 0;
@@ -123,43 +145,43 @@ int main(void){
 
 			if(are_motors_initilized == 0){
 				initilize_stepper_motors();
+				HAL_GPIO_WritePin(GPIOA,GPIO_PIN_5,GPIO_PIN_RESET);
 			}
 			else{
-				abs_position = POWERSTEP01_SPI_READ_24_BIT(0x01);
+				HAL_GPIO_TogglePin(GPIOA,GPIO_PIN_5);
 
-				switch (motor_command) {
-				case 1:
-					//spd = 65535;
-					//SEND_Command_4_byte(RUN_Command_Reverse, ((spd/65536)%256), ((spd/256)%256), (spd%256));
-					SEND_Command_4_byte(RUN_Command_Reverse, motor_speed[0], motor_speed[1], motor_speed[2]);
-					break;
-				case 2:
-					//spd = motor_speed;
-					SEND_Command_4_byte(RUN_Command_Forward, motor_speed[0], motor_speed[1], motor_speed[2]);
-					break;
-				case 3 :
-					SEND_Command_1_byte(HARD_STOP_Command);
-					break;
-				case 4 :
-					SEND_Command_1_byte(RESET_POS_Command);
-					break;
-				case 5 :
-					pos = motor_requested_pos;
-					SEND_Command_4_byte(0x60, ((pos / 65535)%256), ((pos / 256)%256), (pos % 256));
-					break;
-				default:
-					break;
+				usart_is_busy = 0;
+				if(usart_is_busy == 0){
+					abs_position = POWERSTEP01_SPI_READ_24_BIT(0x01);
+
+					switch (motor_command) {
+					case 1:
+						//spd = 65535;
+						//SEND_Command_4_byte(RUN_Command_Reverse, ((spd/65536)%256), ((spd/256)%256), (spd%256));
+						SEND_Command_4_byte(RUN_Command_Reverse, motor_speed[0], motor_speed[1], motor_speed[2]);
+						break;
+					case 2:
+						//spd = motor_speed;
+						SEND_Command_4_byte(RUN_Command_Forward, motor_speed[0], motor_speed[1], motor_speed[2]);
+						break;
+					case 3 :
+						SEND_Command_1_byte(HARD_STOP_Command);
+						break;
+					case 4 :
+						SEND_Command_1_byte(RESET_POS_Command);
+						break;
+					case 5 :
+						pos = motor_requested_pos;
+						SEND_Command_4_byte(0x60, ((pos / 65535)%256), ((pos / 256)%256), (pos % 256));
+						break;
+					default:
+						break;
+					}
 				}
 			}
 		}
 		if(_1_sec == 1){
 			_1_sec = 0;
-			if(are_motors_initilized == 1){
-				HAL_GPIO_TogglePin(GPIOA,GPIO_PIN_5);
-			}
-			else{
-				HAL_GPIO_WritePin(GPIOA,GPIO_PIN_5,GPIO_PIN_RESET);
-			}
 			read_address();
 		}
 	}

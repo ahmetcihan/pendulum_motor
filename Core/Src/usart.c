@@ -58,7 +58,9 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle){
 } 
 void USART_ReceiveData( void ) {
 
-	if(rx_buffer[0] == 'S' && rx_buffer[1] == 'T' && rx_buffer[2] == 'E' && rx_buffer[3] == 'P'){
+	if(rx_buffer[0] == 'S' && rx_buffer[1] == 'T' && rx_buffer[2] == 'P'){
+		if(rx_buffer[3] != device_address)	return;
+
 		motor_command = rx_buffer[4];
 		motor_requested_pos = 256* rx_buffer[5] + rx_buffer[6];
 		motor_speed[0] = rx_buffer[7];
@@ -69,17 +71,20 @@ void USART_ReceiveData( void ) {
 			HAL_GPIO_TogglePin(GPIOA,GPIO_PIN_5);
 		}
 
+		usart_is_busy = 1;
 		HAL_GPIO_WritePin( GPIOA , Tx2_en , GPIO_PIN_SET );
 
-		tx_buffer[0] = 'A';
-		tx_buffer[1] = 'H';
-		tx_buffer[2] = 'A';
-		tx_buffer[3] = (char)(abs_position/65536)%256;
-		tx_buffer[4] = (char)(abs_position/256)%256;
-		tx_buffer[5] = (char)(abs_position)%256;
-		tx_buffer[6] = 0x0D;
-		tx_buffer[7] = 0x0A;
-		HAL_UART_Transmit_IT(&huart2,&tx_buffer[0],8);
+		tx_buffer[0] = 's';
+		tx_buffer[1] = 't';
+		tx_buffer[2] = 'p';
+		tx_buffer[3] = device_address;
+		tx_buffer[4] = (char)(abs_position/65536)%256;
+		tx_buffer[5] = (char)(abs_position/256)%256;
+		tx_buffer[6] = (char)(abs_position)%256;
+		tx_buffer[7] = 0x0D;
+		tx_buffer[8] = 0x0A;
+		usart_send_start_delay = 2;
+		usart_send_start_command = 1;
 	}
 }
 
