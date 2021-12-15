@@ -7,7 +7,7 @@ UART_HandleTypeDef huart2;
 void MX_USART2_UART_Init(void){
 
 	huart2.Instance = USART2;
-	huart2.Init.BaudRate = 115200;
+	huart2.Init.BaudRate = 230400;
 	huart2.Init.WordLength = UART_WORDLENGTH_8B;
 	huart2.Init.StopBits = UART_STOPBITS_1;
 	huart2.Init.Parity = UART_PARITY_NONE;
@@ -71,20 +71,20 @@ void USART_ReceiveData( void ) {
 			HAL_GPIO_TogglePin(GPIOA,GPIO_PIN_5);
 		}
 
-		usart_is_busy = 1;
-		HAL_GPIO_WritePin( GPIOA , Tx2_en , GPIO_PIN_SET );
-
-		tx_buffer[0] = 's';
-		tx_buffer[1] = 't';
-		tx_buffer[2] = 'p';
-		tx_buffer[3] = device_address;
-		tx_buffer[4] = (char)(abs_position/65536)%256;
-		tx_buffer[5] = (char)(abs_position/256)%256;
-		tx_buffer[6] = (char)(abs_position)%256;
-		tx_buffer[7] = 0x0D;
-		tx_buffer[8] = 0x0A;
-		usart_send_start_delay = 2;
-		usart_send_start_command = 1;
+//		usart_is_busy = 1;
+//		HAL_GPIO_WritePin( GPIOA , Tx2_en , GPIO_PIN_SET );
+//
+//		tx_buffer[0] = 's';
+//		tx_buffer[1] = 't';
+//		tx_buffer[2] = 'p';
+//		tx_buffer[3] = device_address;
+//		tx_buffer[4] = (char)(abs_position/65536)%256;
+//		tx_buffer[5] = (char)(abs_position/256)%256;
+//		tx_buffer[6] = (char)(abs_position)%256;
+//		tx_buffer[7] = 0x0D;
+//		tx_buffer[8] = 0x0A;
+//		usart_send_start_delay = 2;
+//		usart_send_start_command = 1;
 	}
 }
 

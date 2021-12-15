@@ -90,15 +90,17 @@ void initilize_stepper_motors(void){
 		break;
 	case 5:
 		//POWERSTEP01_SPI_WRITE_16_BIT( DEC_REG, 0x008A );
+		POWERSTEP01_SPI_WRITE_8_BIT( OCD_TH_REG, 0x1F );
 		temporary++;
 		break;
 	case 6:
-		POWERSTEP01_SPI_WRITE_16_BIT( MAX_SPEED_REG, 0x0055 );
+		POWERSTEP01_SPI_WRITE_16_BIT( MAX_SPEED_REG, 0x03FF );	//max is 3FF = 1024
 		temporary++;
 		break;
 	case 7:
 		if(current_mode_control == 1){
-			POWERSTEP01_SPI_WRITE_8_BIT( STEP_MODE_REG, 0x0F);
+			//POWERSTEP01_SPI_WRITE_8_BIT( STEP_MODE_REG, 0x0F);
+			POWERSTEP01_SPI_WRITE_8_BIT( STEP_MODE_REG, 0x08);
 		}
 		else{
 			POWERSTEP01_SPI_WRITE_8_BIT( STEP_MODE_REG, 0x07);
@@ -111,37 +113,37 @@ void initilize_stepper_motors(void){
 		break;
 	case 9:
 		if(current_mode_control == 1){
-			POWERSTEP01_SPI_WRITE_8_BIT( KVAL_HOLD_REG, 0x05 );
+			POWERSTEP01_SPI_WRITE_8_BIT( KVAL_HOLD_REG, 0x08 );
 		}
 		else{
-			POWERSTEP01_SPI_WRITE_8_BIT( KVAL_HOLD_REG, 0x05 );
+			POWERSTEP01_SPI_WRITE_8_BIT( KVAL_HOLD_REG, 0x15 );
 		}
 		temporary++;
 		break;
 	case 10:
 		if(current_mode_control == 1){
-			POWERSTEP01_SPI_WRITE_8_BIT( KVAL_RUN_REG, 0x05 );
+			POWERSTEP01_SPI_WRITE_8_BIT( KVAL_RUN_REG, 0x10 );
 		}
 		else{
-			POWERSTEP01_SPI_WRITE_8_BIT( KVAL_RUN_REG, 0x15 );
+			POWERSTEP01_SPI_WRITE_8_BIT( KVAL_RUN_REG, 0x35 );
 		}
 		temporary++;
 		break;
 	case 11:
 		if(current_mode_control == 1){
-			POWERSTEP01_SPI_WRITE_8_BIT( KVAL_ACC_REG, 0x05 );
+			POWERSTEP01_SPI_WRITE_8_BIT( KVAL_ACC_REG, 0x10 );
 		}
 		else{
-			POWERSTEP01_SPI_WRITE_8_BIT( KVAL_ACC_REG, 0x15 );
+			POWERSTEP01_SPI_WRITE_8_BIT( KVAL_ACC_REG, 0x25 );
 		}
 		temporary++;
 		break;
 	case 12:
 		if(current_mode_control == 1){
-			POWERSTEP01_SPI_WRITE_8_BIT( KVAL_DEC_REG, 0x05 );
+			POWERSTEP01_SPI_WRITE_8_BIT( KVAL_DEC_REG, 0x10 );
 		}
 		else{
-			POWERSTEP01_SPI_WRITE_8_BIT( KVAL_DEC_REG, 0x15 );
+			POWERSTEP01_SPI_WRITE_8_BIT( KVAL_DEC_REG, 0x25 );
 		}
 		temporary++;
 		break;
