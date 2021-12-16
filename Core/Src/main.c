@@ -43,8 +43,6 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 			rx_counter++;
 		}
 		HAL_UART_Receive_IT(&huart2, &rx_byte, 1);
-		HAL_GPIO_TogglePin(GPIOA,GPIO_PIN_5);
-
 	}
 }
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart){
@@ -108,7 +106,7 @@ int main(void){
 			if (buffer_clear_timer == 0) {
 				buffer_cleared = 1;
 				clear_usart_buffer();
-				//HAL_GPIO_TogglePin(GPIOA,GPIO_PIN_5);
+				HAL_GPIO_TogglePin(GPIOA,GPIO_PIN_5);
 			}
 		}
 
@@ -138,6 +136,7 @@ int main(void){
 		}
 		if(_1_msec == 1){
 			_1_msec = 0;
+
 		}
 		if(_10_msec == 1){
 			_10_msec = 0;
@@ -196,7 +195,7 @@ void SystemClock_Config(void){
 	RCC_OscInitStruct.HSEState = RCC_HSE_ON;
 	RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
 	RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
-	RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL2;
+	RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL4;
 	RCC_OscInitStruct.PLL.PREDIV = RCC_PREDIV_DIV1;
 	if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK){
 		Error_Handler();
