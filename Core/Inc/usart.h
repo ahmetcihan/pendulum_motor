@@ -14,7 +14,7 @@ void USART_ReceiveData(void);
 
 uint32_t buffer_clear_timer;
 uint8_t buffer_cleared;
-uint8_t			control_ReceiveData;
+uint8_t	control_ReceiveData;
 
 #endif /*__ usart_H */
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

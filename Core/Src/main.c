@@ -43,6 +43,8 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 			rx_counter++;
 		}
 		HAL_UART_Receive_IT(&huart2, &rx_byte, 1);
+		HAL_GPIO_TogglePin(GPIOA,GPIO_PIN_5);
+
 	}
 }
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart){
@@ -106,13 +108,13 @@ int main(void){
 			if (buffer_clear_timer == 0) {
 				buffer_cleared = 1;
 				clear_usart_buffer();
+				//HAL_GPIO_TogglePin(GPIOA,GPIO_PIN_5);
 			}
 		}
 
 		if(control_ReceiveData == 1){
 			USART_ReceiveData();
 			control_ReceiveData = 0;
-
 		}
 
 		if(_100_usec == 1){
@@ -148,7 +150,7 @@ int main(void){
 				HAL_GPIO_WritePin(GPIOA,GPIO_PIN_5,GPIO_PIN_RESET);
 			}
 			else{
-				HAL_GPIO_TogglePin(GPIOA,GPIO_PIN_5);
+				//HAL_GPIO_TogglePin(GPIOA,GPIO_PIN_5);
 
 				usart_is_busy = 0;
 				if(usart_is_busy == 0){
