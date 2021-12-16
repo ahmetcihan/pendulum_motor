@@ -67,9 +67,6 @@ void USART_ReceiveData( void ) {
 		motor_speed[1] = rx_buffer[8];
 		motor_speed[2] = rx_buffer[9];
 
-		if(are_motors_initilized == 1){
-			//HAL_GPIO_TogglePin(GPIOA,GPIO_PIN_5);
-		}
 
 //		usart_is_busy = 1;
 //		HAL_GPIO_WritePin( GPIOA , Tx2_en , GPIO_PIN_SET );

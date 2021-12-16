@@ -107,6 +107,36 @@ int main(void){
 				buffer_cleared = 1;
 				clear_usart_buffer();
 				HAL_GPIO_TogglePin(GPIOA,GPIO_PIN_5);
+				if(are_motors_initilized == 1){
+					usart_is_busy = 0;
+					if(usart_is_busy == 0){
+						abs_position = POWERSTEP01_SPI_READ_24_BIT(0x01);
+
+						switch (motor_command) {
+						case 1:
+							//spd = 65535;
+							//SEND_Command_4_byte(RUN_Command_Reverse, ((spd/65536)%256), ((spd/256)%256), (spd%256));
+							SEND_Command_4_byte(RUN_Command_Reverse, motor_speed[0], motor_speed[1], motor_speed[2]);
+							break;
+						case 2:
+							//spd = motor_speed;
+							SEND_Command_4_byte(RUN_Command_Forward, motor_speed[0], motor_speed[1], motor_speed[2]);
+							break;
+						case 3 :
+							SEND_Command_1_byte(HARD_STOP_Command);
+							break;
+						case 4 :
+							SEND_Command_1_byte(RESET_POS_Command);
+							break;
+						case 5 :
+							pos = motor_requested_pos;
+							SEND_Command_4_byte(0x60, ((pos / 65535)%256), ((pos / 256)%256), (pos % 256));
+							break;
+						default:
+							break;
+						}
+					}
+				}
 			}
 		}
 
@@ -149,36 +179,7 @@ int main(void){
 				HAL_GPIO_WritePin(GPIOA,GPIO_PIN_5,GPIO_PIN_RESET);
 			}
 			else{
-				//HAL_GPIO_TogglePin(GPIOA,GPIO_PIN_5);
-
-				usart_is_busy = 0;
-				if(usart_is_busy == 0){
-					abs_position = POWERSTEP01_SPI_READ_24_BIT(0x01);
-
-					switch (motor_command) {
-					case 1:
-						//spd = 65535;
-						//SEND_Command_4_byte(RUN_Command_Reverse, ((spd/65536)%256), ((spd/256)%256), (spd%256));
-						SEND_Command_4_byte(RUN_Command_Reverse, motor_speed[0], motor_speed[1], motor_speed[2]);
-						break;
-					case 2:
-						//spd = motor_speed;
-						SEND_Command_4_byte(RUN_Command_Forward, motor_speed[0], motor_speed[1], motor_speed[2]);
-						break;
-					case 3 :
-						SEND_Command_1_byte(HARD_STOP_Command);
-						break;
-					case 4 :
-						SEND_Command_1_byte(RESET_POS_Command);
-						break;
-					case 5 :
-						pos = motor_requested_pos;
-						SEND_Command_4_byte(0x60, ((pos / 65535)%256), ((pos / 256)%256), (pos % 256));
-						break;
-					default:
-						break;
-					}
-				}
+				HAL_GPIO_TogglePin(GPIOA,GPIO_PIN_5);
 			}
 		}
 		if(_1_sec == 1){
