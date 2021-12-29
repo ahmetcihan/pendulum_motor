@@ -116,7 +116,7 @@ void initilize_stepper_motors(void){
 			POWERSTEP01_SPI_WRITE_8_BIT( KVAL_HOLD_REG, 0x08 );
 		}
 		else{
-			POWERSTEP01_SPI_WRITE_8_BIT( KVAL_HOLD_REG, 0x15 );
+			POWERSTEP01_SPI_WRITE_8_BIT( KVAL_HOLD_REG, 0x03 );
 		}
 		temporary++;
 		break;
@@ -125,7 +125,7 @@ void initilize_stepper_motors(void){
 			POWERSTEP01_SPI_WRITE_8_BIT( KVAL_RUN_REG, 0x10 );
 		}
 		else{
-			POWERSTEP01_SPI_WRITE_8_BIT( KVAL_RUN_REG, 0x35 );
+			POWERSTEP01_SPI_WRITE_8_BIT( KVAL_RUN_REG, 0x05 );
 		}
 		temporary++;
 		break;
@@ -134,7 +134,7 @@ void initilize_stepper_motors(void){
 			POWERSTEP01_SPI_WRITE_8_BIT( KVAL_ACC_REG, 0x10 );
 		}
 		else{
-			POWERSTEP01_SPI_WRITE_8_BIT( KVAL_ACC_REG, 0x25 );
+			POWERSTEP01_SPI_WRITE_8_BIT( KVAL_ACC_REG, 0x05 );
 		}
 		temporary++;
 		break;
@@ -143,7 +143,7 @@ void initilize_stepper_motors(void){
 			POWERSTEP01_SPI_WRITE_8_BIT( KVAL_DEC_REG, 0x10 );
 		}
 		else{
-			POWERSTEP01_SPI_WRITE_8_BIT( KVAL_DEC_REG, 0x25 );
+			POWERSTEP01_SPI_WRITE_8_BIT( KVAL_DEC_REG, 0x05 );
 		}
 		temporary++;
 		break;
