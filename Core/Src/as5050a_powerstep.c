@@ -103,7 +103,7 @@ void initilize_stepper_motors(void){
 			POWERSTEP01_SPI_WRITE_8_BIT( STEP_MODE_REG, 0x08);
 		}
 		else{
-			POWERSTEP01_SPI_WRITE_8_BIT( STEP_MODE_REG, 0x07);
+			POWERSTEP01_SPI_WRITE_8_BIT( STEP_MODE_REG, 0x07); //0x07 is full step
 		}
 		temporary++;
 		break;
@@ -113,10 +113,10 @@ void initilize_stepper_motors(void){
 		break;
 	case 9:
 		if(current_mode_control == 1){
-			POWERSTEP01_SPI_WRITE_8_BIT( KVAL_HOLD_REG, 0x08 );
+			POWERSTEP01_SPI_WRITE_8_BIT( KVAL_HOLD_REG, 0x08 );	//These should be TVAL Registers
 		}
 		else{
-			POWERSTEP01_SPI_WRITE_8_BIT( KVAL_HOLD_REG, 0x03 );
+			POWERSTEP01_SPI_WRITE_8_BIT( KVAL_HOLD_REG, 0x0E );
 		}
 		temporary++;
 		break;
@@ -125,7 +125,7 @@ void initilize_stepper_motors(void){
 			POWERSTEP01_SPI_WRITE_8_BIT( KVAL_RUN_REG, 0x10 );
 		}
 		else{
-			POWERSTEP01_SPI_WRITE_8_BIT( KVAL_RUN_REG, 0x05 );
+			POWERSTEP01_SPI_WRITE_8_BIT( KVAL_RUN_REG, 0x10 );
 		}
 		temporary++;
 		break;
@@ -134,7 +134,7 @@ void initilize_stepper_motors(void){
 			POWERSTEP01_SPI_WRITE_8_BIT( KVAL_ACC_REG, 0x10 );
 		}
 		else{
-			POWERSTEP01_SPI_WRITE_8_BIT( KVAL_ACC_REG, 0x05 );
+			POWERSTEP01_SPI_WRITE_8_BIT( KVAL_ACC_REG, 0x10 );
 		}
 		temporary++;
 		break;
@@ -143,7 +143,7 @@ void initilize_stepper_motors(void){
 			POWERSTEP01_SPI_WRITE_8_BIT( KVAL_DEC_REG, 0x10 );
 		}
 		else{
-			POWERSTEP01_SPI_WRITE_8_BIT( KVAL_DEC_REG, 0x05 );
+			POWERSTEP01_SPI_WRITE_8_BIT( KVAL_DEC_REG, 0x10 );
 		}
 		temporary++;
 		break;
