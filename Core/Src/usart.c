@@ -68,20 +68,20 @@ void USART_ReceiveData( void ) {
 		motor_speed[2] = rx_buffer[9];
 
 
-//		usart_is_busy = 1;
-//		HAL_GPIO_WritePin( GPIOA , Tx2_en , GPIO_PIN_SET );
-//
-//		tx_buffer[0] = 's';
-//		tx_buffer[1] = 't';
-//		tx_buffer[2] = 'p';
-//		tx_buffer[3] = device_address;
-//		tx_buffer[4] = (char)(abs_position/65536)%256;
-//		tx_buffer[5] = (char)(abs_position/256)%256;
-//		tx_buffer[6] = (char)(abs_position)%256;
-//		tx_buffer[7] = 0x0D;
-//		tx_buffer[8] = 0x0A;
-//		usart_send_start_delay = 2;
-//		usart_send_start_command = 1;
+		usart_is_busy = 1;
+		HAL_GPIO_WritePin( GPIOA , Tx2_en , GPIO_PIN_SET );
+
+		tx_buffer[0] = 's';
+		tx_buffer[1] = 't';
+		tx_buffer[2] = 'p';
+		tx_buffer[3] = device_address;
+		tx_buffer[4] = (char)(abs_position/65536)%256;
+		tx_buffer[5] = (char)(abs_position/256)%256;
+		tx_buffer[6] = (char)(abs_position)%256;
+		tx_buffer[7] = 0x0D;
+		tx_buffer[8] = 0x0A;
+		usart_send_start_delay = 2;
+		usart_send_start_command = 1;
 	}
 }
 
